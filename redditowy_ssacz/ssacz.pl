@@ -15,6 +15,7 @@ use LWP::Simple;
 use Data::Dumper; # for debug only
 
 #config
+my $save_dir = "d:\\pr0n\\gonewild\\"; # dir where downloaded images will be saved, please escape \
 my $input_url = 'http://www.reddit.com/r/gonewild.json?count=100';
 my $numpages = 10; # number of pages to download
 my $filter = '[[({]f[\])}]'; # change f to m if you want penis content
@@ -34,14 +35,14 @@ sub download_img
 	my $s = '';
 	$s = '(from selfpost)' if($selfpost);
 	
-	if (-e $filename)
+	if (-e $save_dir.$filename)
 	{
 		say "Already got image $s $img_url";
 	}
 	else
 	{
 		say "Downloading image $s from $img_url";
-		mirror($img_url, $filename);
+		mirror($img_url, $save_dir.$filename);
 	}	
 }
 
