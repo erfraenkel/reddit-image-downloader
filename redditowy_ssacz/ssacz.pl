@@ -1,9 +1,9 @@
 #!/usr/bin/env perl
 
-# my hello world program
+# simple reddit image downloader
 #
-# WTF-PL 2 licensed
-# copyleft by pecet
+# MIT licensed (https://secure.wikimedia.org/wikipedia/en/wiki/MIT_license)
+# (c) by pecet
 # pecet.jogger.pl
 # 
 
@@ -12,13 +12,16 @@ use strict;
 use warnings;
 use JSON;
 use LWP::Simple;
+use Config::Simple;
 use Data::Dumper; # for debug only
 
 #config
-my $save_dir = "d:\\pr0n\\gonewild\\"; # dir where downloaded images will be saved, please escape \
-my $input_url = 'http://www.reddit.com/r/gonewild.json?count=100';
-my $numpages = 10; # number of pages to download
-my $filter = '[[({]f[\])}]'; # change f to m if you want penis content
+my $cfg = new Config::Simple('./ssacz.ini');
+
+my $save_dir = $cfg->get_block('gonewild')->{'save_dir'};
+my $input_url = $cfg->get_block('gonewild')->{'input_url'};
+my $numpages = $cfg->get_block('gonewild')->{'numpages'};
+my $filter = $cfg->get_block('gonewild')->{'filter'};
 
 #the rest variables
 my $url = $input_url;
