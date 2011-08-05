@@ -69,18 +69,8 @@ for my $page (1..$numpages)
 
 	   if($i->{'title'} =~ m/$filter/i) 
 	   {
-		   unless($i->{'selftext'})
+		   if($i->{'selftext'})		   
 		   {	   	
-			   if ($i->{'url'} =~ m|http://(?:i\.)?(imgur\.com/([a-zA-Z0-9]*\.jpg))|)
-			   {
-				say "-- Got single image post";				   	
-			   		my $img_url = "http://i.$1";
-			   		my $filename = $2;
-					download_img($img_url, $filename, 0);
-			   }
-		   }
-		   else
-		   {
 		   		say "-- Got selftext post";
 		   		my @img_urls = $i->{'selftext'} =~ m|http://(?:i\.)?(?:imgur\.com/([a-zA-Z0-9]*\.jpg))|g;
 		   		#say Dumper(\@img_urls);
@@ -88,7 +78,18 @@ for my $page (1..$numpages)
 				{
 					my $img_url = "http://i.imgur.com/$filename";
 					download_img($img_url, $filename, 1);				
-				}		   		
+				}		   	
+
+		   }
+		   else
+		   {
+		   	   if ($i->{'url'} =~ m|http://(?:i\.)?(imgur\.com/([a-zA-Z0-9]*\.jpg))|)
+			   {
+				say "-- Got single image post";				   	
+			   		my $img_url = "http://i.$1";
+			   		my $filename = $2;
+					download_img($img_url, $filename, 0);
+			   }
 		   }
 		}
 		$after = $i->{'id'};	   
