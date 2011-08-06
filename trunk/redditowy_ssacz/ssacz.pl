@@ -41,11 +41,9 @@ $cfg = $cfg->read('./ssacz.ini');
 for my $subreddit (keys %$cfg)
 {
 	say "------ Downloading using configuration \"$subreddit\" -----";
-	
-	my $save_dir = $cfg->{$subreddit}->{'save_dir'};
-	my $input_url = $cfg->{$subreddit}->{'input_url'};
-	my $numpages = $cfg->{$subreddit}->{'numpages'};
-	my $filter = $cfg->{$subreddit}->{'filter'};
+
+	my ($save_dir, $input_url, $numpages, $filter) =
+		@{$cfg->{$subreddit}}{ qw( save_dir input_url numpages filter ) };
 	
 	#the rest variables
 	my $url = $input_url;
