@@ -34,8 +34,8 @@ sub download_img
 }
 
 #config
-my $cfg = new Config::Tiny;
-$cfg = $cfg->read('./ssacz.ini');
+my $cfg = Config::Tiny->new();
+$cfg = $cfg->read('./ssacz.ini');	
 
 #main
 for my $subreddit (keys %$cfg)
@@ -75,7 +75,6 @@ for my $subreddit (keys %$cfg)
 			   {	   	
 			   		say "-- Got selftext post";
 			   		my @img_urls = $i->{'selftext'} =~ m^http://(?:i\.)?(?:imgur\.com/([a-zA-Z0-9]*\.(?:jpg|png|gif|jpeg)))^gi ;
-			   		#say Dumper(\@img_urls);
 					for my $filename (@img_urls)
 					{
 						my $img_url = "http://i.imgur.com/$filename";
