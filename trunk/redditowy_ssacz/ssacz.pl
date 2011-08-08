@@ -74,7 +74,7 @@ for my $subreddit (keys %$cfg)
 			   if($i->{'selftext'})		   
 			   {	   	
 			   		say "-- Got selftext post";
-			   		my @img_urls = $i->{'selftext'} =~ m|http://(?:i\.)?(?:imgur\.com/([a-zA-Z0-9]*\.jpg))|g;
+			   		my @img_urls = $i->{'selftext'} =~ m^http://(?:i\.)?(?:imgur\.com/([a-zA-Z0-9]*\.(?:jpg|png|gif|jpeg)))^gi ;
 			   		#say Dumper(\@img_urls);
 					for my $filename (@img_urls)
 					{
@@ -85,7 +85,7 @@ for my $subreddit (keys %$cfg)
 			   }
 			   else
 			   {
-			   	   if ($i->{'url'} =~ m|http://(?:i\.)?(imgur\.com/([a-zA-Z0-9]*\.jpg))|)
+			   	   if ($i->{'url'} =~ m^http://(?:i\.)?(imgur\.com/([a-zA-Z0-9]*\.(?:jpg|png|gif|jpeg)))^i )
 				   {
 					say "-- Got single image post";				   	
 				   		my $img_url = "http://i.$1";
