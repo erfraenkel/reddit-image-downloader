@@ -44,8 +44,8 @@ sub main
 	{
 		say "------ Downloading using configuration \"$subreddit\" -----";
 	
-		my ($save_dir, $input_url, $numpages, $filter) =
-			@{$cfg->{$subreddit}}{ qw( save_dir input_url numpages filter ) };
+		my ($save_dir, $input_url, $num_pages, $filter) =
+			@{$cfg->{$subreddit}}{ qw( save_dir input_url num_pages filter ) };
 		
 		#the rest variables
 		my $url = $input_url;
@@ -55,7 +55,7 @@ sub main
 		my $parsed;	
 		
 		# get one subreddit at the time
-		for my $page (1..$numpages)	
+		for my $page (1..$num_pages)	
 		{
 			$content = get($url);
 			unless (defined $content) {
@@ -63,7 +63,7 @@ sub main
 			    next;
 			}	
 			$parsed = from_json($content);
-			say "Downloading page $page of $numpages ($url)";
+			say "Downloading page $page of $num_pages ($url)";
 			
 			$parsed = $parsed->{'data'}->{'children'}; 
 			
