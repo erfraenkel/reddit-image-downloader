@@ -40,7 +40,6 @@ sub main
 	my $dirpath = join(' ', @_);
 	say('You must specify input dir, please include trailing / or \\.') and exit() until $dirpath;
 	
-	say index('cokolwiek', 'penis');
 	opendir(my $dir, $dirpath);
 	my @files = readdir($dir);
 	for my $file (@files)
