@@ -17,11 +17,27 @@ use Digest::MD5 qw(md5_hex);
 use Data::Dumper; # for debug only
 
 #subs
+sub separate
+{
+	my($input) = @_ or die('expected one string parameter');
+	my $ret = {};	
+	$input =~ m/(.*)\.(.*)/;
+	$ret->{'name'} = $1 or $ret->{'name'} = $input;
+	$ret->{'ext'} = $2 or $ret->{'ext'} = '';
+	return $ret;
+}
+
 sub download_img
 {
-	my ($save_dir, $img_url, $filename, $selfpost) = @_;
+	my ($save_dir, $img_url, $filename, $hash_filename, $selfpost) = @_;
 	my $s = '';
 	$s = '(from selfpost)' if($selfpost);
+	
+	if($hash_filename)
+	{
+		my $f = separate($filename);
+		$filename = md5_hex($f->{'name'}).'.'.$f->{'ext'};
+	}
 	
 	if (-e $save_dir.$filename)
 	{
@@ -36,7 +52,7 @@ sub download_img
 
 sub main
 {
-	#config
+	# config
 	my $cfg = Config::Tiny->new();
 	$cfg = $cfg->read('./ssacz.ini');
 				
@@ -44,13 +60,12 @@ sub main
 	{
 		say "------ Downloading using configuration \"$subreddit\" -----";
 	
-		my ($save_dir, $input_url, $num_pages, $filter) =
-			@{$cfg->{$subreddit}}{ qw( save_dir input_url num_pages filter ) };
+		my ($save_dir, $input_url, $num_pages, $filter, $hash_filename) =
+			@{$cfg->{$subreddit}}{ qw( save_dir input_url num_pages filter hash_filename) };
 		
-		#the rest variables
+		# variables
 		my $url = $input_url;
-		my $after;
-		
+		my $after; # download next page AFTER this submission id		
 		my $content;
 		my $parsed;	
 		
@@ -80,7 +95,7 @@ sub main
 						for my $filename (@img_urls)
 						{
 							my $img_url = "http://i.imgur.com/$filename";
-							download_img($save_dir, $img_url, $filename, 1);				
+							download_img($save_dir, $img_url, $filename, $hash_filename, 1);				
 						}		   	
 		
 				   }
@@ -91,7 +106,7 @@ sub main
 						say "-- Got single image post";				   	
 					   		my $img_url = "http://i.$1";
 					   		my $filename = $2;
-							download_img($save_dir, $img_url, $filename, 0);
+							download_img($save_dir, $img_url, $filename, $hash_filename, 0);
 					   }
 				   }
 				}
