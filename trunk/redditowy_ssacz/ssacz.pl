@@ -48,6 +48,8 @@ sub download_img
 		say "Downloading image $s from $img_url";
 		mirror($img_url, $save_dir.$filename);
 	}	
+	
+	return;
 }
 
 sub main
@@ -86,7 +88,7 @@ sub main
 			{
 			   $i = $i->{'data'};
 		
-			   if(!$filter or $i->{'title'} =~ m/$filter/i) 
+			   if(not $filter or $i->{'title'} =~ m/$filter/i) 
 			   {
 				   if($i->{'selftext'})		   
 				   {	   	
@@ -118,6 +120,8 @@ sub main
 		say "Done with $subreddit!";
 	}
 	say 'All done!';
+	
+	return;
 }
 
 main(); # execute main sub
